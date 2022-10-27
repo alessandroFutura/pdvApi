@@ -7,6 +7,7 @@
         public $CdChamada;
         public $NmPessoa;
         public $CdCPF_CGC;
+        public $StConsumidor;
 
         public function __construct($data)
         {
@@ -14,6 +15,7 @@
             $this->CdChamada = $data->CdChamada;
             $this->TpPessoa = $data->TpPessoa;
             $this->NmPessoa = $data->NmPessoa;
+            $this->StConsumidor = $data->CdChamada == "097448";
             $this->CdCPF_CGC = @$data->CdCPF_CGC ? $data->CdCPF_CGC : NULL;
 
             $this->image = getImage((Object)[

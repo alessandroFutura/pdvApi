@@ -100,7 +100,7 @@
             $post->company = (Object)$post->company;
 
             $nfe = new NFe($post);
-            var_dump($nfe->emit->enderEmit);
+            var_dump($nfe->det);
 
 //            var_dump($post);
 //            var_dump($certificate);

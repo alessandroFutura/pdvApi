@@ -21,6 +21,7 @@
         public $idLote;
         public $digVal;
 
+        public $det;
         public $ide;
         public $Signature;
 
@@ -55,13 +56,35 @@
             $data->cMunFG = $this->cMun;
             $data->tpEmis = $this->tpEmis;
             $data->tpAmb = $this->tpAmb;
-            //$data->chNFe = $this->chNFe;
+            $data->chNFe = $this->chNFe;
             $data->cDV = $this->cDV;
 
             $this->ide = new NFeIde($data);
             $this->emit = new NFeEmit($data->company);
-            $this->dest = @$data->person ? new NFeDest($data->person) : NULL;
-//            $this->total = new NFeTotal($data);
+            $this->dest = !$data->person->StConsumidor ? new NFeDest($data->person) : NULL;
+            $this->total = new NFeTotal($data);
+
+            $this->det = [];
+            foreach($data->items as $key => $item){
+                $item->nItem = $key+1;
+                $item->mod = $this->mod;
+
+//                if(in_array($item->csosn, ["101"])){
+//                    $item->pCredSN = $data->company->company_icms_sn;
+//                    $item->vCredICMSSN = round($item->pCredSN * $item->document_item_value_total / 100, 2);
+//                    $this->total->vCredICMSSN += $item->vCredICMSSN;
+//                }
+
+                //$item->operation = $data->operation->operation_type_code;
+                $det = new NFeDet($item);
+                //$this->total->vFedTrib += $det->imposto->vFedTrib;
+                //$this->total->vEstTrib += $det->imposto->vEstTrib;
+                //$this->total->vMunTrib += $det->imposto->vMunTrib;
+                //$this->total->vTotTrib += $det->imposto->vTotTrib;
+
+                $this->det[] = $det;
+            }
+
         }
 
         public function _cDV()
